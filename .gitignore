@@ -1,3 +1,10 @@
+# IntelliJ IDEA files
+electro.iml
+.idea/
+
+# Build directory
+target/
+
 # Compiled class file
 *.class
 
