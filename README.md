@@ -1,6 +1,6 @@
 # electro
 
-A Java to help work with musical time. Based on the
+A Java library to help work with musical time. Based on the
 [rhythm](https://github.com/brunchboy/afterglow/blob/master/src/afterglow/rhythm.clj)
 namespace in
 [Afterglow](https://github.com/brunchboy/afterglow#afterglow), ported
@@ -8,7 +8,7 @@ to plain Java to give these capabilities to [Beat
 Link](https://github.com/brunchboy/beat-link#beat-link) without
 requiring it to embed the Clojure ecosystem.
 
-## Use
+## Installation
 
 Electro is available through Maven Central, so to use it in your Maven
 project, all you need  is to include the appropriate dependency.
@@ -20,7 +20,7 @@ for electro. The proper format for including the latest release as a
 dependency in a variety of tools can be found in the **Dependency
 Information** section. If you want these kinds of capabilities from
 Clojure, you are better off depending on
-[Afterglow](https://clojars.org/afterglow) via Clojars and using its
+[Afterglow via Clojars](https://clojars.org/afterglow) and using its
 Clojure-oriented `rhythm` namespace, linked at the top of the page.
 
 If you want to manually install electro, you can download the library
