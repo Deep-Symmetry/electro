@@ -46,35 +46,6 @@ public class Metronome {
     }
 
     /**
-     * Restarts the metronome at the beginning of the specified beat number.
-     *
-     * @param beat the beat to which the metronome should jump; the first beat is beat 1
-     */
-    public void jumpToBeat(long beat) {
-
-    }
-
-    /**
-     * Restarts the metronome at the start of the specified bar, keeping the beat phase unchanged in case
-     * it is being synchronized to an external source.
-     *
-     * @param bar the bar to which the metronome should jump; the first bar is bar 1
-     */
-    public void jumpToBar(long bar) {
-
-    }
-
-    /**
-     * Restarts the metronome at the start of the specified phrase, keaping the beat phase unchanged in case
-     * it is being synchronized to an external source.
-     *
-     * @param phrase the phrase to which the metronome should jump; the first phrase is phrase 1
-     */
-    public void jumpToPhrase(long phrase) {
-
-    }
-
-    /**
      * Adds a number of milliseconds to the start time of the metronome. Useful to nudge it back into synchronization
      * with an external source.
      *
@@ -243,7 +214,16 @@ public class Metronome {
      * @return the current beat number, which starts at 1
      */
     public synchronized long getBeat() {
+        return markerNumber(System.currentTimeMillis(), startTime.get(), getBeatInterval());
+    }
 
+    /**
+     * Restarts the metronome at the beginning of the specified beat number.
+     *
+     * @param beat the beat to which the metronome should jump; the first beat is beat 1
+     */
+    public synchronized void jumpToBeat(long beat) {
+        startTime.set(Math.round(System.currentTimeMillis() - ((beat - 1) * getBeatInterval())));
     }
 
     /**
@@ -254,7 +234,7 @@ public class Metronome {
      * @return the time at which the specified beat begins
      */
     public synchronized long getTimeOfBeat(long beat) {
-
+        return ((beat - 1) * getBeatInterval()) + startTime.get();
     }
 
     /**
@@ -263,7 +243,18 @@ public class Metronome {
      * @return the current beat phase
      */
     public synchronized double getBeatPhase() {
+        return markerPhase(System.currentTimeMillis(), startTime.get(), getBeatInterval());
+    }
 
+    /**
+     * Figures out the least disruptive phase shift that ends up in a target phase.
+     *
+     * @param delta the amount to be added to our current phase to achieve a desired phase
+     *
+     * @return an amount that will yield the same phase while changing our position the least
+     */
+    private static double findClosestDelta(double delta) {
+        return (delta > 0.5 ? (delta - 1.0) : (delta < -0.5 ? (delta + 1.0) : delta));
     }
 
     /**
@@ -274,7 +265,9 @@ public class Metronome {
      * @param phase the desired beat phase, in the range [0.0, 1.0).
      */
     public synchronized void setBeatPhase(double phase) {
-
+        final double delta = findClosestDelta(normalizePhase(phase) - getBeatPhase());
+        final long shift = Math.round(getBeatInterval() * delta);
+        startTime.addAndGet(-shift);
     }
 
     /**
@@ -283,7 +276,20 @@ public class Metronome {
      * @return the current bar number, which starts at 1
      */
     public synchronized long getBar() {
+        return markerNumber(System.currentTimeMillis(), startTime.get(), getBarInterval());
+    }
 
+    /**
+     * Restarts the metronome at the start of the specified bar, keeping the beat phase unchanged in case
+     * it is being synchronized to an external source.
+     *
+     * @param bar the bar to which the metronome should jump; the first bar is bar 1
+     */
+    public synchronized void jumpToBar(long bar) {
+        final double phase = getBeatPhase();
+        final double closestPhase = (phase > 0.5)? (phase - 1.0) : phase;
+        final double shift = getBeatInterval() * closestPhase;
+        startTime.set(Math.round(System.currentTimeMillis() - shift - ((bar - 1) * getBarInterval())));
     }
 
     /**
@@ -294,7 +300,7 @@ public class Metronome {
      * @return the time at which the specified bar begins
      */
     public synchronized long getTimeOfBar(long bar) {
-
+        return ((bar - 1) * getBarInterval()) + startTime.get();
     }
 
     /**
@@ -303,7 +309,7 @@ public class Metronome {
      * @return the current bar phase
      */
     public synchronized double getBarPhase() {
-
+        return markerPhase(System.currentTimeMillis(), startTime.get(), getBarInterval());
     }
 
     /**
@@ -314,7 +320,9 @@ public class Metronome {
      * @param phase the desired bar phase, in the range [0.0, 1.0).
      */
     public synchronized void setBarPhase(double phase) {
-
+        final double delta = findClosestDelta(normalizePhase(phase) - getBarPhase());
+        final long shift = Math.round(getBarInterval() * delta);
+        startTime.addAndGet(-shift);
     }
 
     /**
@@ -323,7 +331,20 @@ public class Metronome {
      * @return the current phrase number, which starts at 1
      */
     public synchronized long getPhrase() {
+        return markerNumber(System.currentTimeMillis(), startTime.get(), getPhraseInterval());
+    }
 
+    /**
+     * Restarts the metronome at the start of the specified phrase, keeping the beat phase unchanged in case
+     * it is being synchronized to an external source.
+     *
+     * @param phrase the phrase to which the metronome should jump; the first phrase is phrase 1
+     */
+    public synchronized void jumpToPhrase(long phrase) {
+        final double phase = getBeatPhase();
+        final double closestPhase = (phase > 0.5)? (phase - 1.0) : phase;
+        final double shift = getBeatInterval() * closestPhase;
+        startTime.set(Math.round(System.currentTimeMillis() - shift - ((phrase - 1) * getPhraseInterval())));
     }
 
     /**
@@ -334,7 +355,7 @@ public class Metronome {
      * @return the time at which the specified phrase begins
      */
     public synchronized long getTimeOfPhrase(long phrase) {
-
+        return ((phrase - 1) * getPhraseInterval()) + startTime.get();
     }
 
     /**
@@ -343,7 +364,7 @@ public class Metronome {
      * @return the current phrase phase
      */
     public synchronized double getPhrasePhase() {
-
+        return markerPhase(System.currentTimeMillis(), startTime.get(), getPhraseInterval());
     }
 
     /**
@@ -354,7 +375,9 @@ public class Metronome {
      * @param phase the desired phrase phase, in the range [0.0, 1.0).
      */
     public synchronized void setPhrasePhase(double phase) {
-
+        final double delta = findClosestDelta(normalizePhase(phase) - getPhrasePhase());
+        final long shift = Math.round(getPhraseInterval() * delta);
+        startTime.addAndGet(-shift);
     }
 
     /**
@@ -386,6 +409,4 @@ public class Metronome {
     public String getMarker () {
         return getSnapshot().getMarker();
     }
-
-
 }

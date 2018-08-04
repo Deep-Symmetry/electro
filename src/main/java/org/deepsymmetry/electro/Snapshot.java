@@ -39,6 +39,21 @@ public class Snapshot {
     public final long instant;
 
     /**
+     * The duration of a beat, in milliseconds, at the tempo when the snapshot was taken.
+     */
+    public final long beatInterval;
+
+    /**
+     * The duration of a bar, in milliseconds, at the tempo when the snapshot was taken.
+     */
+    public final long barInterval;
+
+    /**
+     * The duration of a phrase, in milliseconds, at the tempo when the snapshot was taken.
+     */
+    public final long phraseInterval;
+
+    /**
      * The beat number being played at the time represented by the snapshot. Beats start at 1.
      */
     public final long beat;
@@ -92,12 +107,26 @@ public class Snapshot {
         beatsPerBar = metronome.getBeatsPerBar();
         barsPerPhrase = metronome.getBarsPerPhrase();
         this.instant = instant;
-        beat = Metronome.markerNumber(instant, startTime, metronome.getBeatInterval());
-        bar = Metronome.markerNumber(instant, startTime, metronome.getBarInterval());
-        phrase = Metronome.markerNumber(instant, startTime, metronome.getPhraseInterval());
-        beatPhase = Metronome.markerPhase(instant, startTime, metronome.getBeatInterval());
-        barPhase = Metronome.markerPhase(instant, startTime, metronome.getBarInterval());
-        phrasePhase = Metronome.markerPhase(instant, startTime, metronome.getPhraseInterval());
+        beatInterval = metronome.getBeatInterval();
+        barInterval = metronome.getBarInterval();
+        phraseInterval = metronome.getPhraseInterval();
+        beat = Metronome.markerNumber(instant, startTime, beatInterval);
+        bar = Metronome.markerNumber(instant, startTime, barInterval);
+        phrase = Metronome.markerNumber(instant, startTime, phraseInterval);
+        beatPhase = Metronome.markerPhase(instant, startTime, beatInterval);
+        barPhase = Metronome.markerPhase(instant, startTime, barInterval);
+        phrasePhase = Metronome.markerPhase(instant, startTime, phraseInterval);
+    }
+
+    /**
+     * Determine the millisecond timestamp at which a particular beat will occur.
+     *
+     * @param beat the number of the beat whose start time is desired
+     *
+     * @return the time at which the specified beat begins
+     */
+    public long getTimeOfBeat(long beat) {
+        return ((beat - 1) * beatInterval) + startTime;
     }
 
     /**
@@ -141,6 +170,17 @@ public class Snapshot {
     }
 
     /**
+     * Determine the millisecond timestamp at which a particular bar will occur.
+     *
+     * @param bar the number of the bar whose start time is desired
+     *
+     * @return the time at which the specified bar begins
+     */
+    public long getTimeOfBar(long bar) {
+        return ((bar - 1) * barInterval) + startTime;
+    }
+
+    /**
      * Return the bar number of the snapshot relative to the start of the phrase: the phrase starts with bar 1, and the
      * range goes up to the value of {@link #barsPerPhrase}.
      *
@@ -149,6 +189,17 @@ public class Snapshot {
     public int getBarWithinPhrase() {
         final double barSize = 1.0 / barsPerPhrase;
         return 1 + (int)Math.floor(phrasePhase / barSize);
+    }
+
+    /**
+     * Determine the millisecond timestamp at which a particular phrase will occur.
+     *
+     * @param phrase the number of the phrase whose start time is desired
+     *
+     * @return the time at which the specified phrase begins
+     */
+    public long getTimeOfPhrase(long phrase) {
+        return ((phrase - 1) * phraseInterval) + startTime;
     }
 
     /**
