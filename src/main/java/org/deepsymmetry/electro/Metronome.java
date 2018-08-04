@@ -9,7 +9,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * accordingly.
  *
  * Inspired by Jeff Rose's work in
- * <a href="https://github.com/overtone/overtone/blob/master/src/overtone/music/rhythm.clj">Overtone</a>.
+ * <a href="https://github.com/overtone/overtone/blob/master/src/overtone/music/rhythm.clj"
+ *    target="blank">Overtone</a>.
  *
  * @author James Elliott
  */
