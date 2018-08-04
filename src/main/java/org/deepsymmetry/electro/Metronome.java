@@ -173,7 +173,9 @@ public class Metronome {
      * Ensure that a phase falls in the range [0.0, 1.0). Values outside the range will have their non-fractional
      * part discarded.
      *
-     * @return the normalized phase.
+     * @param phase a phase value that may require normalization to within the unit range
+     *
+     * @return the normalized phase
      */
     public static double normalizePhase(double phase) {
         if (phase < 0.0) {
@@ -395,6 +397,8 @@ public class Metronome {
      * Take a snapshot of the beat, bar, phrase, and phase state that the metronome would have at the specified
      * millisecond timestamp, so coherent calculations about them can be performed with respect to that static point
      * in time.
+     *
+     * @param instant the point in time which this snapshot should capture
      *
      * @return a representation of the detailed metronome state at the specified moment
      */
