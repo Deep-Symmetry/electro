@@ -70,11 +70,17 @@ public class Metronome {
      * Establish a new tempo for the metronome. The start time will be adjusted so that the current beat and phase
      * are unaffected by the tempo change.
      *
-     * @param tempo the number of beats per minute at which the metronome should now run
+     * @param newTempo the number of beats per minute at which the metronome should now run
      */
-    public synchronized void setTempo(double tempo) {
-        this.tempo.set(tempo);
-        // TODO Adjust start!
+    public synchronized void setTempo(double newTempo) {
+        final long instant = System.currentTimeMillis();
+        final long start = startTime.get();
+        final long interval = getBeatInterval();
+        final long beat = markerNumber(instant, start, interval);
+        final double phase = markerPhase(instant, start, interval);
+        final long newInterval = beatsToMilliseconds(1, newTempo);
+        startTime.set(Math.round(instant - (newInterval * (phase + beat - 1))));
+        tempo.set(newTempo);
     }
 
     /**
