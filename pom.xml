@@ -10,7 +10,7 @@
 
     <packaging>jar</packaging>
 
-    <name>beat-link</name>
+    <name>electro</name>
     <description>A Java library to help work with musical time.</description>
     <url>https://github.com/brunchboy/electro</url>
     <inceptionYear>2018</inceptionYear>
