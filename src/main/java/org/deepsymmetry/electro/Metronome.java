@@ -14,27 +14,28 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author James Elliott
  */
+@SuppressWarnings("WeakerAccess")
 public class Metronome {
 
     /**
      * The millisecond timestamp at which the beat grid originates.
      */
-    private AtomicLong startTime = new AtomicLong(System.currentTimeMillis());
+    private final AtomicLong startTime = new AtomicLong(System.currentTimeMillis());
 
     /**
      * The number of beats per second.
      */
-    private AtomicReference<Double> tempo = new AtomicReference<Double>(120.0);
+    private final AtomicReference<Double> tempo = new AtomicReference<Double>(120.0);
 
     /**
      * The number of beats in a bar.
      */
-    private AtomicInteger beatsPerBar = new AtomicInteger(4);
+    private final AtomicInteger beatsPerBar = new AtomicInteger(4);
 
     /**
      * The number of bars in a phrase.
      */
-    private AtomicInteger barsPerPhrase = new AtomicInteger(8);
+    private final AtomicInteger barsPerPhrase = new AtomicInteger(8);
 
     /**
      * Returns the time at which this metronome was effectively started (tempo changes will shift this, as will

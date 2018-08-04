@@ -10,6 +10,7 @@ package org.deepsymmetry.electro;
  *
  * @author James Elliott
  */
+@SuppressWarnings("WeakerAccess")
 public class Snapshot {
 
     /**
