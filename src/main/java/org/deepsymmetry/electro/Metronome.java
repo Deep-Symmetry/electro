@@ -233,7 +233,7 @@ public class Metronome {
      * @param beat the beat to which the metronome should jump; the first beat is beat 1
      */
     public synchronized void jumpToBeat(long beat) {
-        startTime.set(Math.round(System.currentTimeMillis() - ((beat - 1) * getBeatInterval())));
+        startTime.set(System.currentTimeMillis() - Math.round(((beat - 1) * getBeatInterval())));
     }
 
     /**
