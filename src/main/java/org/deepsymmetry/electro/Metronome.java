@@ -421,4 +421,9 @@ public class Metronome {
     public String getMarker () {
         return getSnapshot().getMarker();
     }
+
+    @Override
+    public String toString() {
+        return "Metronome[" + getSnapshot().toString() + "]";
+    }
 }

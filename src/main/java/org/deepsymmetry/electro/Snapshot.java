@@ -211,4 +211,15 @@ public class Snapshot {
     public String getMarker () {
         return phrase + "." + getBarWithinPhrase() + "." + getBeatWithinBar();
     }
+
+    @Override
+    public String toString() {
+        return "Snapshot[marker: " + getMarker() + ", startTime:" + startTime +
+                " (" + new java.util.Date(startTime) + "), instant: " + instant +
+                " (" + new java.util.Date(instant) + "), beatPhase:" + beatPhase +
+                ", barPhase:" + barPhase + ", phrasePhase:" + phrasePhase +
+                ", tempo:" + tempo + ", beatsPerBar:" + beatsPerBar + ", barsPerPhrase:" + barsPerPhrase +
+                ", beatInterval:" + beatInterval + ", barInterval:" + barInterval +
+                ", phraseInterval:" + phraseInterval + "]";
+    }
 }
