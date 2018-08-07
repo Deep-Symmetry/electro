@@ -5,17 +5,20 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * A beat management tool. Tell it what BPM you want, and it will compute beat, bar, and phrase timestamps
- * accordingly.
+ * <p>A beat management tool. Tell it what BPM you want, and it will compute beat, bar, and phrase timestamps
+ * accordingly. If you only need a single piece of information, you can obtain it directly from the metronome.
+ * If you need to work with two or more values, you need to call {@link #getSnapshot()} and ask the snapshot
+ * for them or you will see inconsistent results, since time will move on between each question you ask the
+ * metronome itself.</p>
  *
- * Inspired by Jeff Rose's work in
+ * <p>Inspired by Jeff Rose's work in
  * <a href="https://github.com/overtone/overtone/blob/master/src/overtone/music/rhythm.clj"
- *    target="blank">Overtone</a>.
+ *    target="blank">Overtone</a>.</p>
  *
  * @author James Elliott
  */
 @SuppressWarnings("WeakerAccess")
-public class Metronome {
+public class Metronome implements Snapshot {
 
     /**
      * The millisecond timestamp at which the beat grid originates.
@@ -43,6 +46,7 @@ public class Metronome {
      *
      * @return the millisecond timestamp at which the beat grid originates.
      */
+    @Override
     public long getStartTime() {
         return startTime.get();
     }
@@ -62,6 +66,7 @@ public class Metronome {
      *
      * @return the number of beats per minute being counted
      */
+    @Override
     public double getTempo() {
         return tempo.get();
     }
@@ -88,6 +93,7 @@ public class Metronome {
      *
      * @return the number of beats per bar being counted
      */
+    @Override
     public int getBeatsPerBar() {
         return beatsPerBar.get();
     }
@@ -112,6 +118,7 @@ public class Metronome {
      *
      * @return the number of bars per phrase being counted
      */
+    @Override
     public int getBarsPerPhrase() {
         return barsPerPhrase.get();
     }
@@ -196,6 +203,7 @@ public class Metronome {
      *
      * @return the duration of a beat
      */
+    @Override
     public synchronized long getBeatInterval() {
         return beatsToMilliseconds(1, tempo.get());
     }
@@ -205,6 +213,7 @@ public class Metronome {
      *
      * @return the duration of a bar
      */
+    @Override
     public synchronized long getBarInterval() {
         return beatsToMilliseconds(beatsPerBar.get(), tempo.get());
     }
@@ -214,6 +223,7 @@ public class Metronome {
      *
      * @return the duration of a phrase
      */
+    @Override
     public synchronized long getPhraseInterval() {
         return beatsToMilliseconds(beatsPerBar.get() * barsPerPhrase.get(), tempo.get());
     }
@@ -223,6 +233,7 @@ public class Metronome {
      *
      * @return the current beat number, which starts at 1
      */
+    @Override
     public synchronized long getBeat() {
         return markerNumber(System.currentTimeMillis(), startTime.get(), getBeatInterval());
     }
@@ -243,6 +254,7 @@ public class Metronome {
      *
      * @return the time at which the specified beat begins
      */
+    @Override
     public synchronized long getTimeOfBeat(long beat) {
         return ((beat - 1) * getBeatInterval()) + startTime.get();
     }
@@ -252,6 +264,7 @@ public class Metronome {
      *
      * @return the current beat phase
      */
+    @Override
     public synchronized double getBeatPhase() {
         return markerPhase(System.currentTimeMillis(), startTime.get(), getBeatInterval());
     }
@@ -285,6 +298,7 @@ public class Metronome {
      *
      * @return the current bar number, which starts at 1
      */
+    @Override
     public synchronized long getBar() {
         return markerNumber(System.currentTimeMillis(), startTime.get(), getBarInterval());
     }
@@ -309,6 +323,7 @@ public class Metronome {
      *
      * @return the time at which the specified bar begins
      */
+    @Override
     public synchronized long getTimeOfBar(long bar) {
         return ((bar - 1) * getBarInterval()) + startTime.get();
     }
@@ -318,6 +333,7 @@ public class Metronome {
      *
      * @return the current bar phase
      */
+    @Override
     public synchronized double getBarPhase() {
         return markerPhase(System.currentTimeMillis(), startTime.get(), getBarInterval());
     }
@@ -340,6 +356,7 @@ public class Metronome {
      *
      * @return the current phrase number, which starts at 1
      */
+    @Override
     public synchronized long getPhrase() {
         return markerNumber(System.currentTimeMillis(), startTime.get(), getPhraseInterval());
     }
@@ -364,6 +381,7 @@ public class Metronome {
      *
      * @return the time at which the specified phrase begins
      */
+    @Override
     public synchronized long getTimeOfPhrase(long phrase) {
         return ((phrase - 1) * getPhraseInterval()) + startTime.get();
     }
@@ -373,6 +391,7 @@ public class Metronome {
      *
      * @return the current phrase phase
      */
+    @Override
     public synchronized double getPhrasePhase() {
         return markerPhase(System.currentTimeMillis(), startTime.get(), getPhraseInterval());
     }
@@ -397,7 +416,7 @@ public class Metronome {
      * @return a representation of the detailed metronome state at the current moment
      */
     public synchronized Snapshot getSnapshot() {
-        return new Snapshot(this);
+        return new MetronomeSnapshot(this);
     }
 
     /**
@@ -410,7 +429,7 @@ public class Metronome {
      * @return a representation of the detailed metronome state at the specified moment
      */
     public synchronized Snapshot getSnapshot(long instant) {
-        return new Snapshot(this, instant);
+        return new MetronomeSnapshot(this, instant);
     }
 
     /**
@@ -418,8 +437,77 @@ public class Metronome {
      *
      * @return a concise textual representation of the current metronome position
      */
+    @Override
     public String getMarker () {
         return getSnapshot().getMarker();
+    }
+
+    /**
+     * Checks when a snapshot was taken; since you are working with a live metronome, always returns the current
+     * time. If you are doing computations around this, you probably want to call {@link #getSnapshot()} and work
+     * with that instead.
+     *
+     * @return the current system time in milliseconds
+     */
+    @Override
+    public long getInstant() {
+        return System.currentTimeMillis();
+    }
+
+    /**
+     * Return the current beat number relative to the start of the bar: the down beat is 1, and the range
+     * goes up to the value of {@link #getBeatsPerBar()}.
+     *
+     * @return the beat number within the current bar being counted
+     */
+    @Override
+    public int getBeatWithinBar() {
+        final double beatSize = 1.0 / beatsPerBar.get();
+        return 1 + (int)Math.floor(getBarPhase() / beatSize);
+    }
+
+    /**
+     * Checks whether the current beat is the first beat in its bar.
+     *
+     * @return {@code true} we are currently in the first beat of a bar
+     */
+    @Override
+    public boolean isDownBeat() {
+        return getBeatWithinBar() == 1;
+    }
+
+    /**
+     * Return the current beat number relative to the start of the phrase: the phrase starts with beat 1, and
+     * the range goes up to the value of {@link #getBeatsPerBar()} times {@link #getBarsPerPhrase()}.
+     *
+     * @return the beat number within the current phrase being counted
+     */
+    @Override
+    public int getBeatWithinPhrase() {
+        final double beatSize = 1.0 / (beatsPerBar.get() * barsPerPhrase.get());
+        return 1 + (int)Math.floor(getPhrasePhase() / beatSize);
+    }
+
+    /**
+     * Checks whether the current beat is the first beat in its phrase.
+     *
+     * @return {@code true} if we are currently in the first beat of a phrase
+     */
+    @Override
+    public boolean isPhraseStart() {
+        return getBeatWithinPhrase() == 1;
+    }
+
+    /**
+     * Return the current bar number relative to the start of the phrase: the phrase starts with bar 1, and the
+     * range goes up to the value of {@link #getBarsPerPhrase()}.
+     *
+     * @return the bar number within the current phrase being counted
+     */
+    @Override
+    public int getBarWithinPhrase() {
+        final double barSize = 1.0 / barsPerPhrase.get();
+        return 1 + (int)Math.floor(getPhrasePhase() / barSize);
     }
 
     @Override

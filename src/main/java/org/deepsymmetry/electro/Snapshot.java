@@ -1,225 +1,197 @@
 package org.deepsymmetry.electro;
 
 /**
- * A snapshot to support a series of beat and phase calculations with respect to a given instant in time,
- * so the calculations can all remain consistent even if they take a while to complete.
+ * <p>An interface for probing details about the timeline established by a metronome, with respect to a particular
+ * moment in time. The {@link Metronome} class implements this interface and provides answers with respect to the
+ * moment at which you called each function, but if you need to work with more than one piece of information at a
+ * time, be sure to use {@link Metronome#getSnapshot()} so that each of your calculations refer to the same moment.
+ * Otherwise you risk getting misleading results, such as when you ask for a beat number in one call, and then
+ * the beat phase, and you have moved on to a different beat in between the calls.</p>
  *
- * Snapshots in Afterglow also extend the notions of beat phase to enable oscillators with frequencies that are
+ * <p>Snapshots in Afterglow also extend the notions of beat phase to enable oscillators with frequencies that are
  * fractions or multiples of a beat. Since that is much more difficult in Java than Clojure, and unlikely to be
- * needed outside the context of a lighting controller, it has not yet been ported. Open an issue if you need it!
+ * needed outside the context of a lighting controller, it has not yet been ported. Open an
+ * <a href="https://github.com/brunchboy/electro/issues" target="blank">issue</a> if you need it!</p>
  *
  * @author James Elliott
  */
 @SuppressWarnings("WeakerAccess")
-public class Snapshot {
+public interface Snapshot {
 
     /**
-     * The point in time at which the metronome from which this snapshot was taken started counting.
+     * Get the metronome's timeline origin.
+     *
+     * @return the point in time at which the metronome from which this snapshot was taken started counting
      */
-    public final long startTime;
+    long getStartTime();
 
     /**
-     * The number of beats per minute at which the metronome from which this snapshot was taken was running.
+     * Get the metronome's tempo.
+     *
+     * @return the number of beats per minute at which the metronome from which this snapshot was taken was running
      */
-    public final double tempo;
+    double getTempo();
 
     /**
-     * The number of beats which made up a bar in the metronome from which this snapshot was taken.
+     * Get the metronome's bar length in beats.
+     *
+     * @return the number of beats which made up a bar in the metronome from which this snapshot was taken
      */
-    public final int beatsPerBar;
+    int getBeatsPerBar();
 
     /**
-     * The number of beats which made up a bar in the metronome from which this snapshot was taken.
+     * Get the metronome's phrase length in bars.
+     *
+     * @return the number of beats which made up a bar in the metronome from which this snapshot was taken
      */
-    public final int barsPerPhrase;
+    int getBarsPerPhrase();
 
     /**
-     * The point in time with respect to which the snapshot is computed. The difference between this and
-     * {@link #startTime}, along with {@link #tempo}, determine the other values.
+     * Get the point in time with respect to which the snapshot is computed. The difference between this and
+     * {@link #getStartTime()}, along with {@link #getTempo()}, determine the other snapshot values.
+     *
+     * @return the moment represented by the snapshot
      */
-    public final long instant;
+    long getInstant();
 
     /**
-     * The duration of a beat, in milliseconds, at the tempo when the snapshot was taken.
+     * Get the metronome's beat length in time.
+     *
+     * @return the duration of a beat, in milliseconds, at the tempo when the snapshot was taken
      */
-    public final long beatInterval;
+    long getBeatInterval();
 
     /**
-     * The duration of a bar, in milliseconds, at the tempo when the snapshot was taken.
+     * Get the metronome's bar length in time.
+     *
+     * @return the duration of a bar, in milliseconds, at the tempo when the snapshot was taken
      */
-    public final long barInterval;
+    long getBarInterval();
 
     /**
-     * The duration of a phrase, in milliseconds, at the tempo when the snapshot was taken.
+     * Get the metronome's phrase length in time.
+     *
+     * @return the duration of a phrase, in milliseconds, at the tempo when the snapshot was taken
      */
-    public final long phraseInterval;
+    long getPhraseInterval();
 
     /**
-     * The beat number being played at the time represented by the snapshot. Beats start at 1.
+     * Get the metronome's beat number.
+     *
+     * @return the beat number being played at the time represented by the snapshot; beats start at 1
      */
-    public final long beat;
+    long getBeat();
 
     /**
-     * The bar number being played at the time represented by the snapshot. Bars start at 1.
+     * Get the metronome's bar number.
+     *
+     * @return the bar number being played at the time represented by the snapshot; bars start at 1
      */
-    public final long bar;
+    long getBar();
 
     /**
-     * The phrase number being played at the time represented by the snapshot. Phrases start at 1.
+     * Get the metronome's phrase number.
+     *
+     * @return the phrase number being played at the time represented by the snapshot; phrases start at 1
      */
-    public final long phrase;
+    long getPhrase();
 
     /**
-     * The metronome's beat phase at the time of the snapshot, a value which starts at 0.0 at the very start of the
+     * Get the metronome's beat phase at the time of the snapshot, a value which starts at 0.0 at the very start of the
      * beat, but never quite reaches 1.0, because that would be the start of the next beat.
+     *
+     * @return how far we have have traveled through the current beat at the point in time represented by the snapshot
      */
-    public final double beatPhase;
+    double getBeatPhase();
 
     /**
-     * The metronome's bar phase at the time of the snapshot, a value which starts at 0.0 at the very start of the
+     * Get the metronome's bar phase at the time of the snapshot, a value which starts at 0.0 at the very start of the
      * bar, but never quite reaches 1.0, because that would be the start of the next bar.
-     */
-    public final double barPhase;
-
-    /**
-     * The metronome's phrase phase at the time of the snapshot, a value which starts at 0.0 at the very start of the
-     * phrase, but never quite reaches 1.0, because that would be the start of the next phrase.
-     */
-    public final double phrasePhase;
-
-    /**
-     * Create a snapshot of the state of the metronome at the current instant in time.
      *
-     * @param metronome the time keeper whose current state is to be analyzed and frozen
+     * @return how far we have traveled through the current bar at the point in time represented by the snapshot
      */
-    Snapshot(Metronome metronome) {
-        this(metronome, System.currentTimeMillis());
-    }
+    double getBarPhase();
 
     /**
-     * Create a snapshot of the state of the metronome at a particular instant in time.
+     * Get the metronome's phrase phase at the time of the snapshot, a value which starts at 0.0 at the very start of
+     * the phrase, but never quite reaches 1.0, because that would be the start of the next phrase.
      *
-     * @param metronome the time keeper whose current state is to be analyzed and frozen
-     * @param instant the millisecond timestamp at which the state of the metronome is to be considered
+     * @return how far we have traveled through the current phrase at the point in time represented by the snapshot
      */
-    Snapshot (Metronome metronome, long instant) {
-        startTime = metronome.getStartTime();
-        tempo = metronome.getTempo();
-        beatsPerBar = metronome.getBeatsPerBar();
-        barsPerPhrase = metronome.getBarsPerPhrase();
-        this.instant = instant;
-        beatInterval = metronome.getBeatInterval();
-        barInterval = metronome.getBarInterval();
-        phraseInterval = metronome.getPhraseInterval();
-        beat = Metronome.markerNumber(instant, startTime, beatInterval);
-        bar = Metronome.markerNumber(instant, startTime, barInterval);
-        phrase = Metronome.markerNumber(instant, startTime, phraseInterval);
-        beatPhase = Metronome.markerPhase(instant, startTime, beatInterval);
-        barPhase = Metronome.markerPhase(instant, startTime, barInterval);
-        phrasePhase = Metronome.markerPhase(instant, startTime, phraseInterval);
-    }
+    double getPhrasePhase();
 
     /**
-     * Determine the millisecond timestamp at which a particular beat will occur.
+     * Determine the millisecond timestamp at which a particular beat will occur, given the metronome configuration when
+     * the snapshot was taken.
      *
      * @param beat the number of the beat whose start time is desired
      *
      * @return the time at which the specified beat begins
      */
-    public long getTimeOfBeat(long beat) {
-        return ((beat - 1) * beatInterval) + startTime;
-    }
+    long getTimeOfBeat(long beat);
 
     /**
      * Return the beat number of the snapshot relative to the start of the bar: the down beat is 1, and the range
-     * goes up to the value of {@link #beatsPerBar}.
+     * goes up to the value of {@link #getBeatsPerBar()}.
      *
-     * @return the beat number within the current bar being counted
+     * @return the beat number within the current bar being counted at the point in time represented by the snapshot
      */
-    public int getBeatWithinBar() {
-        final double beatSize = 1.0 / beatsPerBar;
-        return 1 + (int)Math.floor(barPhase / beatSize);
-    }
+    int getBeatWithinBar();
 
     /**
      * Checks whether the current beat at the time of the snapshot was the first beat in its bar.
      *
      * @return {@code true} if the snapshot was taken during the first beat of a bar
      */
-    public boolean isDownBeat() {
-        return getBeatWithinBar() == 1;
-    }
+    boolean isDownBeat();
 
     /**
      * Return the beat number of the snapshot relative to the start of the phrase: the phrase starts with beat 1, and
-     * the range goes up to the value of {@link #beatsPerBar} times {@link #barsPerPhrase}.
+     * the range goes up to the value of {@link #getBeatsPerBar()} times {@link #getBarsPerPhrase()}.
      *
-     * @return the beat number within the current phrase being counted
+     * @return the beat number within the current phrase being counted at the point in time represented by the snapshot
      */
-    public int getBeatWithinPhrase() {
-        final double beatSize = 1.0 / (beatsPerBar * barsPerPhrase);
-        return 1 + (int)Math.floor(phrasePhase / beatSize);
-    }
+    int getBeatWithinPhrase();
 
     /**
      * Checks whether the current beat at the time of the snapshot was the first beat in its phrase.
      *
      * @return {@code true} if the snapshot was taken during the first beat of a phrase
      */
-    public boolean isPhraseStart() {
-        return getBeatWithinPhrase() == 1;
-    }
+    boolean isPhraseStart();
 
     /**
-     * Determine the millisecond timestamp at which a particular bar will occur.
+     * Determine the millisecond timestamp at which a particular bar will occur, given the metronome configuration when
+     * the snapshot was taken.
      *
      * @param bar the number of the bar whose start time is desired
      *
      * @return the time at which the specified bar begins
      */
-    public long getTimeOfBar(long bar) {
-        return ((bar - 1) * barInterval) + startTime;
-    }
+    long getTimeOfBar(long bar);
 
     /**
      * Return the bar number of the snapshot relative to the start of the phrase: the phrase starts with bar 1, and the
-     * range goes up to the value of {@link #barsPerPhrase}.
+     * range goes up to the value of {@link #getBarsPerPhrase()}.
      *
-     * @return the bar number within the current phrase being counted
+     * @return the bar number within the current phrase being counted at the point in time represented by the snapshot
      */
-    public int getBarWithinPhrase() {
-        final double barSize = 1.0 / barsPerPhrase;
-        return 1 + (int)Math.floor(phrasePhase / barSize);
-    }
+    int getBarWithinPhrase();
 
     /**
-     * Determine the millisecond timestamp at which a particular phrase will occur.
+     * Determine the millisecond timestamp at which a particular phrase will occur, given the metronome configuration
+     * when the snapshot was taken.
      *
      * @param phrase the number of the phrase whose start time is desired
      *
      * @return the time at which the specified phrase begins
      */
-    public long getTimeOfPhrase(long phrase) {
-        return ((phrase - 1) * phraseInterval) + startTime;
-    }
+    long getTimeOfPhrase(long phrase);
 
     /**
      * Returns the time represented by the snapshot as "phrase.bar.beat".
      *
      * @return a concise textual representation of the current metronome position at the time of the snapshot
      */
-    public String getMarker () {
-        return phrase + "." + getBarWithinPhrase() + "." + getBeatWithinBar();
-    }
-
-    @Override
-    public String toString() {
-        return "Snapshot[marker: " + getMarker() + ", startTime:" + startTime +
-                " (" + new java.util.Date(startTime) + "), instant: " + instant +
-                " (" + new java.util.Date(instant) + "), beatPhase:" + beatPhase +
-                ", barPhase:" + barPhase + ", phrasePhase:" + phrasePhase +
-                ", tempo:" + tempo + ", beatsPerBar:" + beatsPerBar + ", barsPerPhrase:" + barsPerPhrase +
-                ", beatInterval:" + beatInterval + ", barInterval:" + barInterval +
-                ", phraseInterval:" + phraseInterval + "]";
-    }
+    String getMarker ();
 }
