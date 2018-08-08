@@ -6,6 +6,12 @@ This change log follows the conventions of
 
 ## [Unreleased][unreleased]
 
+Nothing so far.
+
+## 0.1.0 - 2018-08-08
+
 ### Added
 
 - Created as a new project.
+
+[unreleased]: https://github.com/brunchboy/electro/compare/v0.1.0...HEAD
