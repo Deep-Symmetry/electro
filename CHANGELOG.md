@@ -6,7 +6,11 @@ This change log follows the conventions of
 
 ## [Unreleased][unreleased]
 
-Nothing so far.
+### Added
+
+- Support for enhanced phases (oscillating marker phases at fractions
+  and/or multiples of their normal speed), now that I have found a way
+  to convert floating point numbers to ratios in Java.
 
 ## 0.1.0 - 2018-08-08
 

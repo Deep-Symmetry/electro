@@ -9,9 +9,9 @@ package org.deepsymmetry.electro;
  * the beat phase, and you have moved on to a different beat in between the calls.</p>
  *
  * <p>Snapshots in Afterglow also extend the notions of beat phase to enable oscillators with frequencies that are
- * fractions or multiples of a beat. Since that is much more difficult in Java than Clojure, and unlikely to be
- * needed outside the context of a lighting controller, it has not yet been ported. Open an
- * <a href="https://github.com/brunchboy/electro/issues" target="blank">issue</a> if you need it!</p>
+ * fractions or multiples of a beat. As of version 0.1.1, this concept has been ported from the Clojure version to
+ * here, but it is available as {@link Metronome#enhancedPhase(long, double, double)} rather than additional
+ * overloads of the snapshot methods.</p>
  *
  * @author James Elliott
  */

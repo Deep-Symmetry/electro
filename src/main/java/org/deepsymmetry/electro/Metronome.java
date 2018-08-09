@@ -1,5 +1,7 @@
 package org.deepsymmetry.electro;
 
+import org.apache.commons.math3.fraction.BigFraction;
+
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -181,6 +183,60 @@ public class Metronome implements Snapshot {
     public static double markerPhase(long instant, long start, long interval) {
         final double ratio = (instant - start) / (double)interval;
         return ratio - Math.floor(ratio);
+    }
+
+    /**
+     * <p>Helper function to calculate phase with respect to multiples or fractions of a marker
+     * (beat, bar, or phrase), given the phase with respect to that marker, the marker number,
+     * and the desired ratio. A {@code desiredRatio} of {@code 1.0} returns the phase unchanged;
+     * {@code 0.5} (1/2) oscillates twice as fast, {@code 0.75} (3/4) oscillates 4 times every 3 markers...</p>
+     *
+     * <p>See the <a href="https://github.com/brunchboy/afterglow/blob/master/doc/oscillators.adoc#ratios" target="blank">
+     *     Ratios illustration</a> in the Afterglow documentation for more details with graphs.</p>
+     *
+     * <p><em>Only positive values were considered for the ratio when writing this algorithm, the results you'll
+     * get if you pass in zero or a negative value, are not likely meaningful.</em></p>
+     *
+     * @param markerNumber the current marker number being considered, as returned by {@link #markerNumber(long, long, long)}
+     * @param markerPhase the current phase with respect to the marker, as returned by {@link #markerPhase(long, long, long)}
+     * @param desiredRatio the ratio by which to oscillate the phase
+     *
+     * @return the oscillated phase
+     *
+     * @see #enhancedPhase(long, double, long, long)
+     */
+    public static double enhancedPhase(long markerNumber, double markerPhase, double desiredRatio) {
+        final BigFraction fraction = new BigFraction(desiredRatio, 0.00000002D, 10000);
+        return enhancedPhase(markerNumber, markerPhase, fraction.getNumeratorAsLong(), fraction.getDenominatorAsLong());
+    }
+
+    /**
+     * <p>Helper function to calculate phase with respect to multiples or fractions of a marker
+     * (beat, bar, or phrase), given the phase with respect to that marker, the marker number,
+     * and the desired ratio. A ration of 1/1 returns the phase unchanged; 1/2 oscillates
+     * twice as fast, 3/4 oscillates 4 times every 3 markers...</p>
+     *
+     * <p>See the <a href="https://github.com/brunchboy/afterglow/blob/master/doc/oscillators.adoc#ratios" target="blank">
+     *     Ratios illustration</a> in the Afterglow documentation for more details with graphs.</p>
+     *
+     * <p><em>Only positive values were considered for the numerator and denominator when writing this algorithm,
+     * the results you'll get if you pass in zero or a negative value, are not likely meaningful.</em></p>
+     *
+     * @param markerNumber the current marker number being considered, as returned by {@link #markerNumber(long, long, long)}
+     * @param markerPhase the current phase with respect to the marker, as returned by {@link #markerPhase(long, long, long)}
+     * @param numerator over how many markers should an oscillation cycle span
+     * @param denominator how many oscillations should occur in that span
+     *
+     * @return the oscillated phase
+     *
+     * @see #enhancedPhase(long, double, double)
+     */
+    public static double enhancedPhase(long markerNumber, double markerPhase, long numerator, long denominator) {
+        double basePhase = (numerator > 1) ?
+                (((markerNumber - 1) % numerator) + markerPhase / numerator) :
+                markerPhase;
+        double adjustedPhase = basePhase * denominator;
+        return adjustedPhase - Math.floor(adjustedPhase);
     }
 
     /**
