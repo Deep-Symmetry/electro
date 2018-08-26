@@ -332,7 +332,7 @@ public class Metronome implements Snapshot {
      *
      * @return an amount that will yield the same phase while changing our position the least
      */
-    private static double findClosestDelta(double delta) {
+    public static double findClosestDelta(double delta) {
         return (delta > 0.5 ? (delta - 1.0) : (delta < -0.5 ? (delta + 1.0) : delta));
     }
 
