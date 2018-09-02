@@ -6,6 +6,10 @@ This change log follows the conventions of
 
 ## [Unreleased][unreleased]
 
+Nothing so far
+
+## [0.1.1] - 2018-09-02
+
 ### Added
 
 - Support for enhanced phases (oscillating marker phases at fractions
@@ -18,4 +22,5 @@ This change log follows the conventions of
 
 - Created as a new project.
 
-[unreleased]: https://github.com/brunchboy/electro/compare/v0.1.0...HEAD
+[unreleased]: https://github.com/brunchboy/electro/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/brunchboy/electro/compare/v0.1.0...v0.1.1
