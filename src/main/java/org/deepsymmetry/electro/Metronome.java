@@ -204,6 +204,7 @@ public class Metronome implements Snapshot {
      * @return the oscillated phase
      *
      * @see #enhancedPhase(long, double, long, long)
+     * @since 0.1.1
      */
     public static double enhancedPhase(long markerNumber, double markerPhase, double desiredRatio) {
         final BigFraction fraction = new BigFraction(desiredRatio, 0.00000002D, 10000);
@@ -230,6 +231,7 @@ public class Metronome implements Snapshot {
      * @return the oscillated phase
      *
      * @see #enhancedPhase(long, double, double)
+     * @since 0.1.1
      */
     public static double enhancedPhase(long markerNumber, double markerPhase, long numerator, long denominator) {
         double basePhase = (numerator > 1) ?
