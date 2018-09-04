@@ -8,6 +8,16 @@ This change log follows the conventions of
 
 Nothing so far
 
+## [0.1.2] - 2018-09-03
+
+### Fixed
+
+- Use double-precision floating point values for beat, bar, and phrase
+  intervals, rather than long integers. This was a bad mistake in the
+  port from Clojure, which was using precise rational values for them.
+  This was leading to inconsistent beat calculations, which was causing
+  sync problems on the Pioneer network.
+
 ## [0.1.1] - 2018-09-02
 
 ### Added
@@ -22,5 +32,6 @@ Nothing so far
 
 - Created as a new project.
 
-[unreleased]: https://github.com/brunchboy/electro/compare/v0.1.1...HEAD
+[unreleased]: https://github.com/brunchboy/electro/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/brunchboy/electro/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/brunchboy/electro/compare/v0.1.0...v0.1.1

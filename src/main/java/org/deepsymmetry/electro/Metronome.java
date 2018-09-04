@@ -82,10 +82,10 @@ public class Metronome implements Snapshot {
     public synchronized void setTempo(double bpm) {
         final long instant = System.currentTimeMillis();
         final long start = startTime.get();
-        final long interval = getBeatInterval();
+        final double interval = getBeatInterval();
         final long beat = markerNumber(instant, start, interval);
         final double phase = markerPhase(instant, start, interval);
-        final long newInterval = beatsToMilliseconds(1, bpm);
+        final double newInterval = beatsToMilliseconds(1, bpm);
         startTime.set(Math.round(instant - (newInterval * (phase + beat - 1))));
         tempo.set(bpm);
     }
@@ -148,8 +148,8 @@ public class Metronome implements Snapshot {
      *
      * @return the number of milliseconds that would pass while that many beats play at that tempo
      */
-    public static long beatsToMilliseconds(long beats, double tempo) {
-        return Math.round((60000.0 / tempo) * beats);
+    public static double beatsToMilliseconds(long beats, double tempo) {
+        return (60000.0 / tempo) * beats;
     }
 
     /**
@@ -163,8 +163,8 @@ public class Metronome implements Snapshot {
      *
      * @return the marker number currently in effect for the metronome at the specified instant
      */
-    public static long markerNumber(long instant, long start, long interval) {
-        return ((instant - start) / interval) + 1;
+    public static long markerNumber(long instant, long start, double interval) {
+        return (long)Math.floor((instant - start) / interval) + 1;
     }
 
     /**
@@ -180,8 +180,8 @@ public class Metronome implements Snapshot {
      *
      * @return the phase in effect for the specified marker at the specified instant, in the range [0.0, 1.0)
      */
-    public static double markerPhase(long instant, long start, long interval) {
-        final double ratio = (instant - start) / (double)interval;
+    public static double markerPhase(long instant, long start, double interval) {
+        final double ratio = (instant - start) / interval;
         return ratio - Math.floor(ratio);
     }
 
@@ -197,8 +197,8 @@ public class Metronome implements Snapshot {
      * <p><em>Only positive values were considered for the ratio when writing this algorithm, the results you'll
      * get if you pass in zero or a negative value, are not likely meaningful.</em></p>
      *
-     * @param markerNumber the current marker number being considered, as returned by {@link #markerNumber(long, long, long)}
-     * @param markerPhase the current phase with respect to the marker, as returned by {@link #markerPhase(long, long, long)}
+     * @param markerNumber the current marker number being considered, as returned by {@link #markerNumber(long, long, double)}
+     * @param markerPhase the current phase with respect to the marker, as returned by {@link #markerPhase(long, long, double)}
      * @param desiredRatio the ratio by which to oscillate the phase
      *
      * @return the oscillated phase
@@ -223,8 +223,8 @@ public class Metronome implements Snapshot {
      * <p><em>Only positive values were considered for the numerator and denominator when writing this algorithm,
      * the results you'll get if you pass in zero or a negative value, are not likely meaningful.</em></p>
      *
-     * @param markerNumber the current marker number being considered, as returned by {@link #markerNumber(long, long, long)}
-     * @param markerPhase the current phase with respect to the marker, as returned by {@link #markerPhase(long, long, long)}
+     * @param markerNumber the current marker number being considered, as returned by {@link #markerNumber(long, long, double)}
+     * @param markerPhase the current phase with respect to the marker, as returned by {@link #markerPhase(long, long, double)}
      * @param numerator over how many markers should an oscillation cycle span
      * @param denominator how many oscillations should occur in that span
      *
@@ -262,7 +262,7 @@ public class Metronome implements Snapshot {
      * @return the duration of a beat
      */
     @Override
-    public synchronized long getBeatInterval() {
+    public synchronized double getBeatInterval() {
         return beatsToMilliseconds(1, tempo.get());
     }
 
@@ -272,7 +272,7 @@ public class Metronome implements Snapshot {
      * @return the duration of a bar
      */
     @Override
-    public synchronized long getBarInterval() {
+    public synchronized double getBarInterval() {
         return beatsToMilliseconds(beatsPerBar.get(), tempo.get());
     }
 
@@ -282,7 +282,7 @@ public class Metronome implements Snapshot {
      * @return the duration of a phrase
      */
     @Override
-    public synchronized long getPhraseInterval() {
+    public synchronized double getPhraseInterval() {
         return beatsToMilliseconds(beatsPerBar.get() * barsPerPhrase.get(), tempo.get());
     }
 
@@ -310,11 +310,11 @@ public class Metronome implements Snapshot {
      *
      * @param beat the number of the beat whose start time is desired
      *
-     * @return the time at which the specified beat begins
+     * @return the time at which the specified beat begins, to the nearest millisecond
      */
     @Override
     public synchronized long getTimeOfBeat(long beat) {
-        return ((beat - 1) * getBeatInterval()) + startTime.get();
+        return Math.round((beat - 1) * getBeatInterval()) + startTime.get();
     }
 
     /**
@@ -379,11 +379,11 @@ public class Metronome implements Snapshot {
      *
      * @param bar the number of the bar whose start time is desired
      *
-     * @return the time at which the specified bar begins
+     * @return the time at which the specified bar begins, rounded to the nearest millisecond
      */
     @Override
     public synchronized long getTimeOfBar(long bar) {
-        return ((bar - 1) * getBarInterval()) + startTime.get();
+        return Math.round((bar - 1) * getBarInterval()) + startTime.get();
     }
 
     /**
@@ -437,11 +437,11 @@ public class Metronome implements Snapshot {
      *
      * @param phrase the number of the phrase whose start time is desired
      *
-     * @return the time at which the specified phrase begins
+     * @return the time at which the specified phrase begins, rounded to the nearest millisecond
      */
     @Override
     public synchronized long getTimeOfPhrase(long phrase) {
-        return ((phrase - 1) * getPhraseInterval()) + startTime.get();
+        return Math.round((phrase - 1) * getPhraseInterval()) + startTime.get();
     }
 
     /**

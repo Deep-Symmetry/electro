@@ -38,17 +38,17 @@ class MetronomeSnapshot implements Snapshot {
     /**
      * The duration of a beat, in milliseconds, at the tempo when the snapshot was taken.
      */
-    private final long beatInterval;
+    private final double beatInterval;
 
     /**
      * The duration of a bar, in milliseconds, at the tempo when the snapshot was taken.
      */
-    private final long barInterval;
+    private final double barInterval;
 
     /**
      * The duration of a phrase, in milliseconds, at the tempo when the snapshot was taken.
      */
-    private final long phraseInterval;
+    private final double phraseInterval;
 
     /**
      * Create a snapshot of the state of the metronome at the current instant in time.
@@ -102,17 +102,17 @@ class MetronomeSnapshot implements Snapshot {
     }
 
     @Override
-    public long getBeatInterval() {
+    public double getBeatInterval() {
         return beatInterval;
     }
 
     @Override
-    public long getBarInterval() {
+    public double getBarInterval() {
         return barInterval;
     }
 
     @Override
-    public long getPhraseInterval() {
+    public double getPhraseInterval() {
         return phraseInterval;
     }
 
@@ -148,7 +148,7 @@ class MetronomeSnapshot implements Snapshot {
 
    @Override
     public long getTimeOfBeat(long beat) {
-        return ((beat - 1) * beatInterval) + startTime;
+        return Math.round((beat - 1) * beatInterval) + startTime;
     }
 
     @Override
@@ -175,7 +175,7 @@ class MetronomeSnapshot implements Snapshot {
 
     @Override
     public long getTimeOfBar(long bar) {
-        return ((bar - 1) * barInterval) + startTime;
+        return Math.round((bar - 1) * barInterval) + startTime;
     }
 
     @Override
@@ -186,7 +186,7 @@ class MetronomeSnapshot implements Snapshot {
 
     @Override
     public long getTimeOfPhrase(long phrase) {
-        return ((phrase - 1) * phraseInterval) + startTime;
+        return Math.round((phrase - 1) * phraseInterval) + startTime;
     }
 
     @Override

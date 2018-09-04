@@ -59,21 +59,21 @@ public interface Snapshot {
      *
      * @return the duration of a beat, in milliseconds, at the tempo when the snapshot was taken
      */
-    long getBeatInterval();
+    double getBeatInterval();
 
     /**
      * Get the metronome's bar length in time.
      *
      * @return the duration of a bar, in milliseconds, at the tempo when the snapshot was taken
      */
-    long getBarInterval();
+    double getBarInterval();
 
     /**
      * Get the metronome's phrase length in time.
      *
      * @return the duration of a phrase, in milliseconds, at the tempo when the snapshot was taken
      */
-    long getPhraseInterval();
+    double getPhraseInterval();
 
     /**
      * Get the metronome's beat number.
@@ -126,7 +126,7 @@ public interface Snapshot {
      *
      * @param beat the number of the beat whose start time is desired
      *
-     * @return the time at which the specified beat begins
+     * @return the time at which the specified beat begins, rounded to the nearest millisecond
      */
     long getTimeOfBeat(long beat);
 
@@ -166,7 +166,7 @@ public interface Snapshot {
      *
      * @param bar the number of the bar whose start time is desired
      *
-     * @return the time at which the specified bar begins
+     * @return the time at which the specified bar begins, rounded to the nearest millisecond
      */
     long getTimeOfBar(long bar);
 
@@ -184,7 +184,7 @@ public interface Snapshot {
      *
      * @param phrase the number of the phrase whose start time is desired
      *
-     * @return the time at which the specified phrase begins
+     * @return the time at which the specified phrase begins, rounded to the nearest millisecond
      */
     long getTimeOfPhrase(long phrase);
 
