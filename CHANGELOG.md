@@ -12,14 +12,14 @@ Nothing so far.
 
 ### Fixed
 
-Protect against loss of floating point precision by always rounding
-to long values _before_ performing arithmetic with system timestamp
-values (since those are huge numbers of milliseconds).
+- Protect against loss of floating point precision by always rounding
+  to long values _before_ performing arithmetic with system timestamp
+  values (since those are huge numbers of milliseconds).
 
 ### Added
 
-Some new utility methods to measure the distance in time to the nearest
-beat, bar, and phrase boundaries.
+- Some new utility methods to measure the distance in time to the
+  nearest beat, bar, and phrase boundaries.
 
 ## [0.1.2] - 2018-09-03
 
