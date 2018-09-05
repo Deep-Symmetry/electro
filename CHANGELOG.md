@@ -6,7 +6,11 @@ This change log follows the conventions of
 
 ## [Unreleased][unreleased]
 
-Nothing so far
+### Fixed
+
+Protect against loss of floating point precision by always rounding
+to long values _before_ performing arithmetic with system timestamp
+values (since those are huge numbers of milliseconds).
 
 ## [0.1.2] - 2018-09-03
 

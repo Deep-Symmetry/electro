@@ -86,7 +86,7 @@ public class Metronome implements Snapshot {
         final long beat = markerNumber(instant, start, interval);
         final double phase = markerPhase(instant, start, interval);
         final double newInterval = beatsToMilliseconds(1, bpm);
-        startTime.set(Math.round(instant - (newInterval * (phase + beat - 1))));
+        startTime.set(instant - Math.round((newInterval * (phase + beat - 1))));
         tempo.set(bpm);
     }
 
@@ -371,7 +371,7 @@ public class Metronome implements Snapshot {
         final double phase = getBeatPhase();
         final double closestPhase = (phase > 0.5)? (phase - 1.0) : phase;
         final double shift = getBeatInterval() * closestPhase;
-        startTime.set(Math.round(System.currentTimeMillis() - shift - ((bar - 1) * getBarInterval())));
+        startTime.set(System.currentTimeMillis() - Math.round(shift - ((bar - 1) * getBarInterval())));
     }
 
     /**
@@ -429,7 +429,7 @@ public class Metronome implements Snapshot {
         final double phase = getBeatPhase();
         final double closestPhase = (phase > 0.5)? (phase - 1.0) : phase;
         final double shift = getBeatInterval() * closestPhase;
-        startTime.set(Math.round(System.currentTimeMillis() - shift - ((phrase - 1) * getPhraseInterval())));
+        startTime.set(System.currentTimeMillis() - Math.round(shift - ((phrase - 1) * getPhraseInterval())));
     }
 
     /**
