@@ -6,6 +6,10 @@ This change log follows the conventions of
 
 ## [Unreleased][unreleased]
 
+Nothing so far.
+
+## [0.1.3] - 2018-09-04
+
 ### Fixed
 
 Protect against loss of floating point precision by always rounding
@@ -41,6 +45,7 @@ beat, bar, and phrase boundaries.
 
 - Created as a new project.
 
-[unreleased]: https://github.com/brunchboy/electro/compare/v0.1.2...HEAD
+[unreleased]: https://github.com/brunchboy/electro/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/brunchboy/electro/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/brunchboy/electro/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/brunchboy/electro/compare/v0.1.0...v0.1.1
