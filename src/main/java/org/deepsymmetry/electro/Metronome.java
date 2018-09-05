@@ -568,6 +568,42 @@ public class Metronome implements Snapshot {
         return 1 + (int)Math.floor(getPhrasePhase() / barSize);
     }
 
+    /**
+     * Determine how far in time the metronome is from the closest beat. The result will be positive if the beat has
+     * already occurred, and negative if it is coming up.
+     *
+     * @return the distance in milliseconds from the closest beat on the metronome's timeline
+     */
+    @Override
+    public double distanceFromBeat() {
+        final double phaseDistance = Metronome.findClosestDelta(getBeatPhase());
+        return phaseDistance * getBeatInterval();
+    }
+
+    /**
+     * Determine how far in time the metronome is from its closest bar boundary. The result will be positive if
+     * the bar has already started, and negative if it is coming up.
+     *
+     * @return the distance in milliseconds from the closest bar boundary on the metronome's timeline
+     */
+    @Override
+    public double distanceFromBar() {
+        final double phaseDistance = Metronome.findClosestDelta(getBarPhase());
+        return phaseDistance * getBarInterval();
+    }
+
+    /**
+     * Determine how far in time the metronome is from its closest phrase boundary. The result will be positive if
+     * the phrase has already started, and negative if it is coming up.
+     *
+     * @return the distance in milliseconds from the closest phrase boundary on the metronome's timeline
+     */
+    @Override
+    public double distanceFromPhrase() {
+        final double phaseDistance = Metronome.findClosestDelta(getPhrasePhase());
+        return phaseDistance * getPhraseInterval();
+    }
+
     @Override
     public String toString() {
         return "Metronome[" + getSnapshot().toString() + "]";

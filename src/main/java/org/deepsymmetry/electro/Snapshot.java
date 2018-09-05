@@ -194,4 +194,29 @@ public interface Snapshot {
      * @return a concise textual representation of the current metronome position at the time of the snapshot
      */
     String getMarker ();
+
+    /**
+     * Determine how far in time the snapshot is from its closest beat. The result will be positive if the beat has
+     * already occurred, and negative if it is coming up.
+     *
+     * @return the distance in milliseconds from the closest beat on the snapshot's timeline
+     */
+    double distanceFromBeat();
+
+    /**
+     * Determine how far in time the snapshot is from its closest bar boundary. The result will be positive if
+     * the bar has already started, and negative if it is coming up.
+     *
+     * @return the distance in milliseconds from the closest bar boundary on the snapshot's timeline
+     */
+    double distanceFromBar();
+
+    /**
+     * Determine how far in time the snapshot is from its closest phrase boundary. The result will be positive if
+     * the phrase has already started, and negative if it is coming up.
+     *
+     * @return the distance in milliseconds from the closest phrase boundary on the snapshot's timeline
+     */
+    double distanceFromPhrase();
+
 }

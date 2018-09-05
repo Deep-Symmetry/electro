@@ -195,6 +195,24 @@ class MetronomeSnapshot implements Snapshot {
     }
 
     @Override
+    public double distanceFromBeat() {
+        final double phaseDistance = Metronome.findClosestDelta(getBeatPhase());
+        return phaseDistance * getBeatInterval();
+    }
+
+    @Override
+    public double distanceFromBar() {
+        final double phaseDistance = Metronome.findClosestDelta(getBarPhase());
+        return phaseDistance * getBarInterval();
+    }
+
+    @Override
+    public double distanceFromPhrase() {
+        final double phaseDistance = Metronome.findClosestDelta(getPhrasePhase());
+        return phaseDistance * getPhraseInterval();
+    }
+
+    @Override
     public String toString() {
         return "Snapshot[marker: " + getMarker() + ", startTime:" + startTime +
                 " (" + new java.util.Date(startTime) + "), instant: " + instant +
