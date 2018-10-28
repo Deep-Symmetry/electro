@@ -45,7 +45,7 @@ Nothing so far.
 
 - Created as a new project.
 
-[unreleased]: https://github.com/brunchboy/electro/compare/v0.1.3...HEAD
-[0.1.3]: https://github.com/brunchboy/electro/compare/v0.1.2...v0.1.3
-[0.1.2]: https://github.com/brunchboy/electro/compare/v0.1.1...v0.1.2
-[0.1.1]: https://github.com/brunchboy/electro/compare/v0.1.0...v0.1.1
+[unreleased]: https://github.com/Deep-Symmetry/electro/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/Deep-Symmetry/electro/compare/v0.1.2...v0.1.3
+[0.1.2]: https://github.com/Deep-Symmetry/electro/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/Deep-Symmetry/electro/compare/v0.1.0...v0.1.1

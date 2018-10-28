@@ -1,11 +1,11 @@
 # electro
 
 A Java library to help work with musical time. Based on the
-[rhythm](https://github.com/brunchboy/afterglow/blob/master/src/afterglow/rhythm.clj)
+[rhythm](https://github.com/Deep-Symmetry/afterglow/blob/master/src/afterglow/rhythm.clj)
 namespace in
-[Afterglow](https://github.com/brunchboy/afterglow#afterglow), ported
+[Afterglow](https://github.com/Deep-Symmetry/afterglow#afterglow), ported
 to plain Java to give these capabilities to [Beat
-Link](https://github.com/brunchboy/beat-link#beat-link) without
+Link](https://github.com/Deep-Symmetry/beat-link#beat-link) without
 requiring it to embed the Clojure ecosystem.
 
 ## Installation
@@ -24,7 +24,7 @@ Clojure, you are better off depending on
 Clojure-oriented `rhythm` namespace, linked at the top of the page.
 
 If you want to manually install electro, you can download the library
-from the [releases](https://github.com/brunchboy/electro/releases)
+from the [releases](https://github.com/Deep-Symmetry/electro/releases)
 page and put it on your project&rsquo;s class path.
 
 ## Usage

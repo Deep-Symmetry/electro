@@ -12,7 +12,7 @@
 
     <name>electro</name>
     <description>A Java library to help work with musical time.</description>
-    <url>https://github.com/brunchboy/electro</url>
+    <url>https://github.com/Deep-Symmetry/electro</url>
     <inceptionYear>2018</inceptionYear>
 
     <organization>
@@ -29,12 +29,12 @@
     </licenses>
 
     <scm>
-      <url>https://github.com/brunchboy/beat-link.git</url>
+      <url>https://github.com/Deep-Symmetry/beat-link.git</url>
     </scm>
 
     <developers>
       <developer>
-        <id>brunchboy</id>
+        <id>Deep-Symmetry</id>
         <name>James Elliott</name>
         <email>james@deepsymmetry.org</email>
         <organization>Deep Symmetry, LLC</organization>
