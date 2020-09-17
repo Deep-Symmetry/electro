@@ -191,7 +191,7 @@ public class Metronome implements Snapshot {
      * and the desired ratio. A {@code desiredRatio} of {@code 1.0} returns the phase unchanged;
      * {@code 0.5} (1/2) oscillates twice as fast, {@code 0.75} (3/4) oscillates 4 times every 3 markers...</p>
      *
-     * <p>See the <a href="https://github.com/Deep-Symmetry/afterglow/blob/master/doc/oscillators.adoc#ratios" target="blank">
+     * <p>See the <a href="https://afterglow-guide.deepsymmetry.org/afterglow/oscillators.html#ratios" target="blank">
      *     Ratios illustration</a> in the Afterglow documentation for more details with graphs.</p>
      *
      * <p><em>Only positive values were considered for the ratio when writing this algorithm, the results you'll
@@ -217,7 +217,7 @@ public class Metronome implements Snapshot {
      * and the desired ratio. A ration of 1/1 returns the phase unchanged; 1/2 oscillates
      * twice as fast, 3/4 oscillates 4 times every 3 markers...</p>
      *
-     * <p>See the <a href="https://github.com/Deep-Symmetry/afterglow/blob/master/doc/oscillators.adoc#ratios" target="blank">
+     * <p>See the <a href="https://afterglow-guide.deepsymmetry.org/afterglow/oscillators.html#ratios" target="blank">
      *     Ratios illustration</a> in the Afterglow documentation for more details with graphs.</p>
      *
      * <p><em>Only positive values were considered for the numerator and denominator when writing this algorithm,
