@@ -53,6 +53,8 @@ public class Metronome implements Snapshot {
      * Create a metronome which is a copy of another metronome, that is sharing the same start time, tempo, beats
      * per bar, and  bars per phrase. Once created, the metronomes are independent, so changes to one will not
      * affect the other.
+     *
+     * @param template the metronome whose configuration is to be copied
      */
     public Metronome(Metronome template) {
         startTime.set(template.getStartTime());
