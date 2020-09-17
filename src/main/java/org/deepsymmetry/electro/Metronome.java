@@ -43,6 +43,25 @@ public class Metronome implements Snapshot {
     private final AtomicInteger barsPerPhrase = new AtomicInteger(8);
 
     /**
+     * Create a new metronome with default configuration. Its start time is now, its tempo is 120.0 beats per minute,
+     * counting four beats per bar, and eight bars per phrase.
+     */
+    public Metronome() {
+    }
+
+    /**
+     * Create a metronome which is a copy of another metronome, that is sharing the same start time, tempo, beats
+     * per bar, and  bars per phrase. Once created, the metronomes are independent, so changes to one will not
+     * affect the other.
+     */
+    public Metronome(Metronome template) {
+        startTime.set(template.getStartTime());
+        tempo.set(template.getTempo());
+        beatsPerBar.set(template.getBeatsPerBar());
+        barsPerPhrase.set(template.getBarsPerPhrase());
+    }
+
+    /**
      * Returns the time at which this metronome was effectively started (tempo changes will shift this, as will
      * a variety of methods which adjust the timeline).
      *
