@@ -6,6 +6,10 @@ This change log follows the conventions of
 
 ## [Unreleased][unreleased]
 
+Nothing so far.
+
+## [0.1.4] - 2020-12-28
+
 ### Added
 
 - Assigned a stable automatic module name so this project can safely
@@ -16,7 +20,7 @@ This change log follows the conventions of
 
 ### Fixed
 
-- Protect against loss of floating point precision by always rounding
+- Protect against loss of floating-point precision by always rounding
   to long values _before_ performing arithmetic with system timestamp
   values (since those are huge numbers of milliseconds).
 
@@ -29,7 +33,7 @@ This change log follows the conventions of
 
 ### Fixed
 
-- Use double-precision floating point values for beat, bar, and phrase
+- Use double-precision floating-point values for beat, bar, and phrase
   intervals, rather than long integers. This was a bad mistake in the
   port from Clojure, which was using precise rational values for them.
   This was leading to inconsistent beat calculations, which was causing
@@ -41,7 +45,7 @@ This change log follows the conventions of
 
 - Support for enhanced phases (oscillating marker phases at fractions
   and/or multiples of their normal speed), now that I have found a way
-  to convert floating point numbers to ratios in Java.
+  to convert floating-point numbers to ratios in Java.
 
 ## 0.1.0 - 2018-08-08
 
@@ -49,7 +53,8 @@ This change log follows the conventions of
 
 - Created as a new project.
 
-[unreleased]: https://github.com/Deep-Symmetry/electro/compare/v0.1.3...HEAD
+[unreleased]: https://github.com/Deep-Symmetry/electro/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/Deep-Symmetry/electro/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/Deep-Symmetry/electro/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/Deep-Symmetry/electro/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/Deep-Symmetry/electro/compare/v0.1.0...v0.1.1

@@ -40,6 +40,6 @@ Copyright © 2018 [Deep Symmetry, LLC](http://deepsymmetry.org)
 
 Distributed under the
 [Eclipse Public License 1.0](http://opensource.org/licenses/eclipse-1.0.php).
-By using this software in any fashion, you are agreeing to be bound by
+By using this software in any fashion, you agree to be bound by
 the terms of this license. You must not remove this notice, or any
 other, from this software.
