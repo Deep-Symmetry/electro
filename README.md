@@ -8,6 +8,8 @@ to plain Java to give these capabilities to [Beat
 Link](https://github.com/Deep-Symmetry/beat-link#beat-link) without
 requiring it to embed the Clojure ecosystem.
 
+[![License](https://img.shields.io/github/license/Deep-Symmetry/electro?color=blue)](#license)
+
 ## Installation
 
 Electro is available through Maven Central, so to use it in your Maven
@@ -34,12 +36,14 @@ for full details.
 
 ## License
 
-<img align="right" alt="Deep Symmetry" src="assets/DS-logo-bw-200-padded-left.png">
+<a href="http://deepsymmetry.org"><img align="right" alt="Deep Symmetry"
+ src="assets/DS-logo-github.png" width="250" height="150"></a>
 
-Copyright © 2018 [Deep Symmetry, LLC](http://deepsymmetry.org)
+Copyright © 2018–2022 [Deep Symmetry, LLC](http://deepsymmetry.org)
 
-Distributed under the
-[Eclipse Public License 1.0](http://opensource.org/licenses/eclipse-1.0.php).
-By using this software in any fashion, you agree to be bound by
-the terms of this license. You must not remove this notice, or any
-other, from this software.
+Distributed under the [Eclipse Public License
+2.0](https://opensource.org/licenses/EPL-2.0). By using this software
+in any fashion, you are agreeing to be bound by the terms of this
+license. You must not remove this notice, or any other, from this
+software. A copy of the license can be found in
+[LICENSE.md](LICENSE.md) within this project.
