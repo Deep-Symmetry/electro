@@ -1,5 +1,8 @@
 # electro
 
+[![project chat](https://img.shields.io/badge/chat-on%20zulip-brightgreen)](https://deep-symmetry.zulipchat.com/#narrow/stream/275322-beat-link-trigger)
+ <img align="right" width="275" height="250" alt="Beat Link" src="assets/BeatLink-logo-padded-left.png">
+
 A Java library to help work with musical time. Based on the
 [rhythm](https://github.com/Deep-Symmetry/afterglow/blob/master/src/afterglow/rhythm.clj)
 namespace in
@@ -33,6 +36,19 @@ page and put it on your project&rsquo;s class path.
 
 See the [API Documentation](http://deepsymmetry.org/electro/apidocs/)
 for full details.
+
+## Getting Help
+
+<a href="http://zulip.com"><img align="right" alt="Zulip logo"
+ src="assets/zulip-icon-circle.svg" width="128" height="128"></a>
+
+Deep Symmetry&rsquo;s projects are generously sponsored with hosting
+by <a href="https://zulip.com">Zulip</a>, an open-source modern team
+chat app designed to keep both live and asynchronous conversations
+organized. Thanks to them, you can <a
+href="https://deep-symmetry.zulipchat.com/#narrow/stream/275322-beat-link-trigger">chat
+with our community</a>, ask questions, get inspiration, and share your
+own ideas.
 
 ## License
 
